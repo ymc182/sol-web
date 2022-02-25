@@ -13,14 +13,12 @@ export default function Program() {
 	const newAddressRef = useRef(null);
 	const joinRef = useRef(null);
 	const [board, setBoard] = useState([[]]);
-	const gameKeypair = localStorage.getItem("savedGame")
-		? localStorage.getItem("savedGame")
-		: anchor.web3.Keypair.generate();
 
 	const programId = new anchor.web3.PublicKey("A4FbE2SFRQ4Gw5BEYnNPvrzupMFPjhfwZqmXcBrCZg2Z");
 	const provider = new anchor.Provider(connection, wallet, "processed");
 	const program = new anchor.Program(idl, programId, provider);
 	async function update() {
+		const gameKeypair = localStorage.getItem("savedGame");
 		const gameState = await program.account.game.fetch(new anchor.web3.PublicKey(gameKeypair));
 		console.log(gameState.board);
 		setGameAddress(gameKeypair);
@@ -30,6 +28,7 @@ export default function Program() {
 		setBoard(gameState.board);
 	}
 	async function join() {
+		const gameKeypair = localStorage.getItem("savedGame");
 		let gameState = await program.account.game.fetch(new anchor.web3.PublicKey(joinRef.current.value));
 		console.log(gameState.board);
 		setGameAddress(gameKeypair);
@@ -46,8 +45,10 @@ export default function Program() {
 			signers: [gameKeypair],
 		});
 		localStorage.setItem("savedGame", gameKeypair.publicKey.toBase58());
+		update();
 	}
 	async function play(idx) {
+		const gameKeypair = localStorage.getItem("savedGame");
 		await program.rpc.play(idx, {
 			accounts: {
 				player: publicKey,
