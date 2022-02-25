@@ -77,11 +77,11 @@ export default function Program() {
 			<label htmlFor="address">Other Player Address:</label>
 			<input ref={newAddressRef} type="text" id="address" name="fname" />
 			<button onClick={startNewGame}>Start New</button>
-			<br />
+			<p>OR</p>
 			<label htmlFor="join">Game Address:</label>
 			<input ref={joinRef} type="text" id="join" name="fname" />
 			<button onClick={join}>Join</button>
-			<p>Board:</p>
+
 			<p>Game Address: {gameAddress}</p>
 			<button onClick={update}>Load Game / Refresh</button>
 			<br />
